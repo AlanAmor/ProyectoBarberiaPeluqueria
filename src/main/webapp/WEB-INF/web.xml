@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <!-- ============================================================
+         BARBER POST — Descriptor de Despliegue (web.xml)
+         Servlet 4.0 / Tomcat 9
+         ============================================================ -->
+
+    <display-name>Barber Post</display-name>
+    <description>Sistema de Reservas para Cadena de Barberías</description>
+
+    <!-- ============================================================
+         Parámetros de contexto globales (configuración de la app)
+         ============================================================ -->
+    <context-param>
+        <param-name>app.name</param-name>
+        <param-value>Barber Post</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>app.version</param-name>
+        <param-value>1.0.0</param-value>
+    </context-param>
+
+    <!-- ============================================================
+         Filtro CORS — permite llamadas desde el frontend al backend
+         cuando se sirven desde orígenes distintos (desarrollo local)
+         ============================================================ -->
+    <filter>
+        <filter-name>CorsFilter</filter-name>
+        <filter-class>com.barberpost.filter.CorsFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CorsFilter</filter-name>
+        <url-pattern>/api/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Filtro de autenticación — protege el área del dashboard -->
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>com.barberpost.filter.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/api/dashboard/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/api/reservas/all</url-pattern>
+    </filter-mapping>
+
+    <!-- ============================================================
+         SERVLETS — Controladores REST de la aplicación
+         ============================================================ -->
+
+    <!-- Servlet de servicios (catálogo y precios) -->
+    <servlet>
+        <servlet-name>ServiciosServlet</servlet-name>
+        <servlet-class>com.barberpost.servlet.ServiciosServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServiciosServlet</servlet-name>
+        <url-pattern>/api/servicios</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServiciosServlet</servlet-name>
+        <url-pattern>/api/servicios/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Servlet de turnos disponibles -->
+    <servlet>
+        <servlet-name>TurnosServlet</servlet-name>
+        <servlet-class>com.barberpost.servlet.TurnosServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TurnosServlet</servlet-name>
+        <url-pattern>/api/turnos</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TurnosServlet</servlet-name>
+        <url-pattern>/api/turnos/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Servlet de reservas (CRUD completo) -->
+    <servlet>
+        <servlet-name>ReservaServlet</servlet-name>
+        <servlet-class>com.barberpost.servlet.ReservaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ReservaServlet</servlet-name>
+        <url-pattern>/api/reservas</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReservaServlet</servlet-name>
+        <url-pattern>/api/reservas/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Servlet de autenticación (login/logout) -->
+    <servlet>
+        <servlet-name>AuthServlet</servlet-name>
+        <servlet-class>com.barberpost.servlet.AuthServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthServlet</servlet-name>
+        <url-pattern>/api/auth</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AuthServlet</servlet-name>
+        <url-pattern>/api/auth/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Servlet de dashboard (estadísticas, clientes, facturación) -->
+    <servlet>
+        <servlet-name>DashboardServlet</servlet-name>
+        <servlet-class>com.barberpost.servlet.DashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DashboardServlet</servlet-name>
+        <url-pattern>/api/dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashboardServlet</servlet-name>
+        <url-pattern>/api/dashboard/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Servlet de chatbot (respuestas automáticas) -->
+    <servlet>
+        <servlet-name>ChatbotServlet</servlet-name>
+        <servlet-class>com.barberpost.servlet.ChatbotServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ChatbotServlet</servlet-name>
+        <url-pattern>/api/chatbot</url-pattern>
+    </servlet-mapping>
+
+    <!-- Servlet de inicialización (sólo primera ejecución) -->
+    <servlet>
+        <servlet-name>SetupServlet</servlet-name>
+        <servlet-class>com.barberpost.servlet.SetupServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SetupServlet</servlet-name>
+        <url-pattern>/api/setup/init</url-pattern>
+    </servlet-mapping>
+
+    <!-- ============================================================
+         Configuración de sesión
+         ============================================================ -->
+    <session-config>
+        <!-- Sesión expira a los 60 minutos de inactividad -->
+        <session-timeout>60</session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+            <!-- En producción con HTTPS, activar: <secure>true</secure> -->
+        </cookie-config>
+    </session-config>
+
+    <!-- ============================================================
+         Páginas de error personalizadas
+         ============================================================ -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/index.html</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/index.html</location>
+    </error-page>
+
+    <!-- Página de bienvenida -->
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+</web-app>

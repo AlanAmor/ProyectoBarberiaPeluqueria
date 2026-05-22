@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión | Barber Post</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bp-login-body">
+
+    <!-- ========================================================
+         LOGIN — Página de autenticación
+         ======================================================== -->
+    <div class="bp-login-wrapper">
+
+        <!-- Columna izquierda — imagen decorativa -->
+        <div class="bp-login-visual d-none d-lg-flex">
+            <div class="bp-login-visual-overlay">
+                <div class="bp-login-quote">
+                    <span class="bp-logo-icon-lg">✂</span>
+                    <h2>BARBER<span class="bp-gold">POST</span></h2>
+                    <p>"El detalle marca la diferencia."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna derecha — formulario -->
+        <div class="bp-login-form-col">
+            <div class="bp-login-form-wrap">
+
+                <!-- Logo móvil -->
+                <div class="bp-login-logo text-center d-lg-none mb-4">
+                    <span class="bp-brand-text fs-3">BARBER<span class="bp-gold">POST</span></span>
+                </div>
+
+                <h1 class="bp-login-title">Bienvenido</h1>
+                <p class="bp-login-subtitle">Ingresá tus credenciales para acceder al panel.</p>
+
+                <!-- Alerta de error -->
+                <div class="bp-alert-error d-none" id="loginError">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <span id="loginErrorMsg">Credenciales incorrectas</span>
+                </div>
+
+                <!-- Formulario de login -->
+                <form id="loginForm" novalidate>
+                    <div class="mb-3">
+                        <label class="bp-label" for="loginUsername">Usuario</label>
+                        <div class="bp-input-group">
+                            <span class="bp-input-icon"><i class="fas fa-user"></i></span>
+                            <input type="text" class="bp-input bp-input-icon-pad" id="loginUsername"
+                                   placeholder="Tu nombre de usuario" required autocomplete="username">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="bp-label" for="loginPassword">Contraseña</label>
+                        <div class="bp-input-group">
+                            <span class="bp-input-icon"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="bp-input bp-input-icon-pad" id="loginPassword"
+                                   placeholder="••••••••" required autocomplete="current-password"
+                                   id="loginPassword">
+                            <button type="button" class="bp-input-toggle-pass" id="togglePass"
+                                    aria-label="Mostrar/ocultar contraseña">
+                                <i class="fas fa-eye" id="passEyeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn bp-btn-primary w-100 bp-btn-lg" id="btnLogin">
+                        <span id="loginBtnText"><i class="fas fa-sign-in-alt me-2"></i>Ingresar</span>
+                        <span id="loginBtnLoad" class="d-none">
+                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>Verificando...
+                        </span>
+                    </button>
+                </form>
+
+                <div class="bp-login-divider">
+                    <a href="index.html" class="bp-link-back">
+                        <i class="fas fa-arrow-left me-1"></i>Volver al sitio
+                    </a>
+                </div>
+
+                <!-- Credenciales de prueba (solo desarrollo) -->
+                <div class="bp-dev-hint">
+                    <small>
+                        <strong>Credenciales de prueba:</strong><br>
+                        Dueño: <code>admin</code> / <code>admin123</code><br>
+                        Empleado: <code>empleado1</code> / <code>emp123</code>
+                    </small>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ========================================================
+        // Login Script — inline por simplicidad
+        // ========================================================
+
+        const BASE_URL = 'api';
+
+        // Toggle mostrar contraseña
+        document.getElementById('togglePass').addEventListener('click', () => {
+            const input = document.getElementById('loginPassword');
+            const icon  = document.getElementById('passEyeIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        });
+
+        // Submit del formulario
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const errorBox = document.getElementById('loginError');
+            const btnText  = document.getElementById('loginBtnText');
+            const btnLoad  = document.getElementById('loginBtnLoad');
+
+            if (!username || !password) {
+                errorBox.classList.remove('d-none');
+                document.getElementById('loginErrorMsg').textContent = 'Ingresá usuario y contraseña.';
+                return;
+            }
+
+            // Mostrar loading
+            btnText.classList.add('d-none');
+            btnLoad.classList.remove('d-none');
+            errorBox.classList.add('d-none');
+
+            try {
+                const resp = await fetch(`${BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const json = await resp.json();
+
+                if (json.success) {
+                    // Guardar rol en sessionStorage para que el dashboard sepa qué mostrar
+                    sessionStorage.setItem('bp_user', JSON.stringify(json.data));
+                    // Redirigir según rol
+                    if (json.data.isOwner) {
+                        window.location.href = 'dashboard-owner.html';
+                    } else {
+                        window.location.href = 'dashboard-employee.html';
+                    }
+                } else {
+                    errorBox.classList.remove('d-none');
+                    document.getElementById('loginErrorMsg').textContent =
+                        json.message || 'Credenciales incorrectas.';
+                }
+
+            } catch (err) {
+                errorBox.classList.remove('d-none');
+                document.getElementById('loginErrorMsg').textContent =
+                    'No se pudo conectar con el servidor. Verificá que el backend esté corriendo.';
+            } finally {
+                btnText.classList.remove('d-none');
+                btnLoad.classList.add('d-none');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservar Turno | Barber Post</title>
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap">
+    <!-- Flatpickr — Date/time picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bp-reservar-body">
+
+    <!-- Navbar compacta -->
+    <nav class="navbar navbar-dark bp-navbar-compact">
+        <div class="container">
+            <a class="navbar-brand bp-brand" href="index.html">
+                <span class="bp-logo-icon">✂</span>
+                <span class="bp-brand-text">BARBER<span class="bp-gold">POST</span></span>
+            </a>
+            <a href="index.html" class="bp-back-link">
+                <i class="fas fa-arrow-left me-1"></i>Volver al inicio
+            </a>
+        </div>
+    </nav>
+
+    <!-- ========================================================
+         RESERVA — Formulario wizard multi-paso
+         ======================================================== -->
+    <main class="bp-reservar-main">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-9 col-md-11">
+
+                    <!-- Encabezado -->
+                    <div class="text-center mb-4">
+                        <h1 class="bp-page-title">Reservar <span class="bp-gold">Turno</span></h1>
+                        <p class="bp-page-subtitle">Completá los pasos y recibí la confirmación por WhatsApp</p>
+                    </div>
+
+                    <!-- ----------------------------------------
+                         Indicador de pasos (progress steps)
+                         ---------------------------------------- -->
+                    <div class="bp-steps-indicator mb-4">
+                        <div class="bp-step-item active" id="stepIndicator1">
+                            <div class="bp-step-dot"><i class="fas fa-cut"></i></div>
+                            <span>Servicio</span>
+                        </div>
+                        <div class="bp-steps-line"></div>
+                        <div class="bp-step-item" id="stepIndicator2">
+                            <div class="bp-step-dot"><i class="fas fa-calendar-alt"></i></div>
+                            <span>Fecha</span>
+                        </div>
+                        <div class="bp-steps-line"></div>
+                        <div class="bp-step-item" id="stepIndicator3">
+                            <div class="bp-step-dot"><i class="fas fa-clock"></i></div>
+                            <span>Horario</span>
+                        </div>
+                        <div class="bp-steps-line"></div>
+                        <div class="bp-step-item" id="stepIndicator4">
+                            <div class="bp-step-dot"><i class="fas fa-user"></i></div>
+                            <span>Tus datos</span>
+                        </div>
+                        <div class="bp-steps-line"></div>
+                        <div class="bp-step-item" id="stepIndicator5">
+                            <div class="bp-step-dot"><i class="fas fa-check"></i></div>
+                            <span>Confirmar</span>
+                        </div>
+                    </div>
+
+                    <!-- ========================================
+                         PASO 1 — Selección de servicio
+                         ======================================== -->
+                    <div class="bp-wizard-step" id="step1">
+                        <div class="bp-card">
+                            <div class="bp-card-header">
+                                <h5><i class="fas fa-cut me-2 bp-gold"></i>Paso 1 — Elegí tu servicio</h5>
+                                <p class="mb-0 bp-text-muted">Seleccioná el servicio que querés. El precio se calcula automáticamente.</p>
+                            </div>
+                            <div class="bp-card-body">
+                                <!-- Cotizador automático -->
+                                <div class="bp-cotizador mb-4" id="cotizador" style="display:none;">
+                                    <div class="bp-cotizador-inner">
+                                        <span class="bp-cotizador-label">Precio estimado:</span>
+                                        <span class="bp-cotizador-price" id="cotizadorPrecio">$0</span>
+                                        <span class="bp-cotizador-duracion" id="cotizadorDuracion"></span>
+                                    </div>
+                                </div>
+                                <!-- Grid de servicios -->
+                                <div class="row g-3" id="serviciosListReserva">
+                                    <div class="col-12 text-center py-3">
+                                        <div class="spinner-border bp-spinner" role="status"></div>
+                                    </div>
+                                </div>
+                                <div class="bp-step-actions mt-4">
+                                    <div></div>
+                                    <button class="btn bp-btn-primary" id="btnSiguiente1" disabled onclick="irAPaso(2)">
+                                        Siguiente <i class="fas fa-arrow-right ms-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ========================================
+                         PASO 2 — Selección de fecha
+                         ======================================== -->
+                    <div class="bp-wizard-step d-none" id="step2">
+                        <div class="bp-card">
+                            <div class="bp-card-header">
+                                <h5><i class="fas fa-calendar-alt me-2 bp-gold"></i>Paso 2 — Elegí la fecha</h5>
+                                <p class="mb-0 bp-text-muted">Seleccioná el día de tu turno. Los domingos están cerrados.</p>
+                            </div>
+                            <div class="bp-card-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-8">
+                                        <div class="bp-datepicker-wrap">
+                                            <input type="text" id="fechaPicker" class="bp-date-input"
+                                                   placeholder="Seleccioná una fecha" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bp-step-actions mt-4">
+                                    <button class="btn bp-btn-outline" onclick="irAPaso(1)">
+                                        <i class="fas fa-arrow-left me-1"></i>Atrás
+                                    </button>
+                                    <button class="btn bp-btn-primary" id="btnSiguiente2" disabled onclick="irAPaso(3)">
+                                        Siguiente <i class="fas fa-arrow-right ms-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ========================================
+                         PASO 3 — Selección de horario
+                         ======================================== -->
+                    <div class="bp-wizard-step d-none" id="step3">
+                        <div class="bp-card">
+                            <div class="bp-card-header">
+                                <h5><i class="fas fa-clock me-2 bp-gold"></i>Paso 3 — Elegí el horario</h5>
+                                <p class="mb-0 bp-text-muted">Solo se muestran los horarios disponibles para la fecha seleccionada.</p>
+                            </div>
+                            <div class="bp-card-body">
+                                <div id="horariosLoading" class="text-center py-3">
+                                    <div class="spinner-border bp-spinner" role="status"></div>
+                                    <p class="mt-2">Buscando horarios disponibles...</p>
+                                </div>
+                                <div id="horariosGrid" class="bp-horarios-grid d-none"></div>
+                                
+                                <div id="horariosVacio" class="text-center py-4 d-none">
+                                    <i class="fas fa-calendar-times fa-3x bp-text-muted mb-3"></i>
+                                    <p class="bp-text-muted">No hay horarios disponibles para este día.<br>Por favor, seleccioná otra fecha.</p>
+                                    <button class="btn bp-btn-outline" onclick="irAPaso(2)">Cambiar fecha</button>
+                                </div>
+                                <div class="bp-step-actions mt-4">
+                                    <button class="btn bp-btn-outline" onclick="irAPaso(2)">
+                                        <i class="fas fa-arrow-left me-1"></i>Atrás
+                                    </button>
+                                    <button class="btn bp-btn-primary" id="btnSiguiente3" disabled onclick="irAPaso(4)">
+                                        Siguiente <i class="fas fa-arrow-right ms-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ========================================
+                         PASO 4 — Datos personales
+                         ======================================== -->
+                    <div class="bp-wizard-step d-none" id="step4">
+                        <div class="bp-card">
+                            <div class="bp-card-header">
+                                <h5><i class="fas fa-user me-2 bp-gold"></i>Paso 4 — Tus datos</h5>
+                                <p class="mb-0 bp-text-muted">Necesitamos tus datos para confirmar el turno y enviarte el WhatsApp.</p>
+                            </div>
+                            <div class="bp-card-body">
+                                <form id="formDatos" novalidate>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="bp-label" for="inputNombre">Nombre *</label>
+                                            <input type="text" class="bp-input" id="inputNombre"
+                                                   placeholder="Tu nombre" required maxlength="100">
+                                            <div class="bp-invalid" id="errorNombre"></div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="bp-label" for="inputApellido">Apellido *</label>
+                                            <input type="text" class="bp-input" id="inputApellido"
+                                                   placeholder="Tu apellido" required maxlength="100">
+                                            <div class="bp-invalid" id="errorApellido"></div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="bp-label" for="inputDni">DNI *</label>
+                                            <input type="text" class="bp-input" id="inputDni"
+                                                   placeholder="Sin puntos (ej: 35123456)" required
+                                                   maxlength="10" pattern="[0-9]+">
+                                            <div class="bp-invalid" id="errorDni"></div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="bp-label" for="inputTelefono">
+                                                Teléfono * <small class="bp-text-muted">(WhatsApp)</small>
+                                            </label>
+                                            <input type="tel" class="bp-input" id="inputTelefono"
+                                                   placeholder="Ej: 1155667788" required maxlength="20">
+                                            <div class="bp-hint">Código de área sin el 0 + número sin el 15</div>
+                                            <div class="bp-invalid" id="errorTelefono"></div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="bp-label" for="inputEmail">
+                                                Email <small class="bp-text-muted">(opcional)</small>
+                                            </label>
+                                            <input type="email" class="bp-input" id="inputEmail"
+                                                   placeholder="tucorreo@email.com" maxlength="150">
+                                        </div>
+                                    </div>
+                                    <div class="bp-step-actions mt-4">
+                                        <button type="button" class="btn bp-btn-outline" onclick="irAPaso(3)">
+                                            <i class="fas fa-arrow-left me-1"></i>Atrás
+                                        </button>
+                                        <button type="button" class="btn bp-btn-primary" onclick="validarDatosYAvanzar()">
+                                            Siguiente <i class="fas fa-arrow-right ms-1"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ========================================
+                         PASO 5 — Confirmación / Resumen
+                         ======================================== -->
+                    <div class="bp-wizard-step d-none" id="step5">
+                        <div class="bp-card">
+                            <div class="bp-card-header">
+                                <h5><i class="fas fa-check-circle me-2 bp-gold"></i>Paso 5 — Confirmá tu reserva</h5>
+                                <p class="mb-0 bp-text-muted">Revisá los datos antes de confirmar.</p>
+                            </div>
+                            <div class="bp-card-body">
+                                <!-- Resumen de la reserva -->
+                                <div class="bp-resumen">
+                                    <div class="bp-resumen-row">
+                                        <span class="bp-resumen-label"><i class="fas fa-cut me-2"></i>Servicio</span>
+                                        <span class="bp-resumen-value" id="resServicio">—</span>
+                                    </div>
+                                    <div class="bp-resumen-row">
+                                        <span class="bp-resumen-label"><i class="fas fa-calendar me-2"></i>Fecha</span>
+                                        <span class="bp-resumen-value" id="resFecha">—</span>
+                                    </div>
+                                    <div class="bp-resumen-row">
+                                        <span class="bp-resumen-label"><i class="fas fa-clock me-2"></i>Hora</span>
+                                        <span class="bp-resumen-value" id="resHora">—</span>
+                                    </div>
+                                    <div class="bp-resumen-row">
+                                        <span class="bp-resumen-label"><i class="fas fa-user me-2"></i>Cliente</span>
+                                        <span class="bp-resumen-value" id="resCliente">—</span>
+                                    </div>
+                                    <div class="bp-resumen-row">
+                                        <span class="bp-resumen-label"><i class="fas fa-phone me-2"></i>WhatsApp</span>
+                                        <span class="bp-resumen-value" id="resTelefono">—</span>
+                                    </div>
+                                    <div class="bp-resumen-row bp-resumen-total">
+                                        <span class="bp-resumen-label"><i class="fas fa-tag me-2"></i>Precio</span>
+                                        <span class="bp-resumen-value bp-gold" id="resPrecio">—</span>
+                                    </div>
+                                </div>
+
+                                <!-- Alerta WhatsApp -->
+                                <div class="bp-whatsapp-notice mt-3">
+                                    <i class="fab fa-whatsapp fa-lg"></i>
+                                    <span>Al confirmar, recibirás un mensaje de WhatsApp con los detalles del turno.</span>
+                                </div>
+
+                                <div class="bp-step-actions mt-4">
+                                    <button class="btn bp-btn-outline" onclick="irAPaso(4)">
+                                        <i class="fas fa-arrow-left me-1"></i>Editar datos
+                                    </button>
+                                    <button class="btn bp-btn-confirm bp-btn-lg" id="btnConfirmar" onclick="confirmarReserva()">
+                                        <i class="fab fa-whatsapp me-2"></i>Confirmar y enviar WhatsApp
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ========================================
+                         PASO 6 — Reserva exitosa
+                         ======================================== -->
+                    <div class="bp-wizard-step d-none" id="stepExito">
+                        <div class="bp-card bp-card-success text-center">
+                            <div class="bp-success-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h3 class="bp-success-title">¡Turno Reservado!</h3>
+                            <p class="bp-success-subtitle">Tu reserva fue confirmada exitosamente.</p>
+                            <div class="bp-success-detail" id="exiMensaje"></div>
+                            <div class="bp-whatsapp-notice mt-3 mb-4">
+                                <i class="fab fa-whatsapp fa-lg"></i>
+                                <span>Hacé click en el botón de abajo para enviar el WhatsApp de confirmación.</span>
+                            </div>
+                            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                                <a href="#" class="btn bp-btn-whatsapp bp-btn-lg" id="btnWhatsApp" target="_blank">
+                                    <i class="fab fa-whatsapp me-2"></i>Enviar confirmación por WhatsApp
+                                </a>
+                                <a href="index.html" class="btn bp-btn-outline bp-btn-lg">
+                                    <i class="fas fa-home me-2"></i>Volver al inicio
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /col -->
+            </div><!-- /row -->
+        </div><!-- /container -->
+    </main>
+
+    <!-- ========================================================
+         Scripts
+         ======================================================== -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+    <script src="js/reserva.js"></script>
+
+</body>
+</html>

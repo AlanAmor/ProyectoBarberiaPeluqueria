@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Empleado | Barber Post</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="bp-dash-body">
+
+    <!-- ========================================================
+         SIDEBAR — Empleado
+         ======================================================== -->
+    <aside class="bp-sidebar" id="sidebar">
+        <div class="bp-sidebar-header">
+            <span class="bp-dash-logo">✂ BARBER<span class="bp-gold">POST</span></span>
+            <button class="bp-sidebar-toggle d-lg-none" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="bp-user-info">
+            <div class="bp-user-avatar" id="dashUserAvatar">E</div>
+            <div>
+                <div class="bp-user-name" id="dashUserName">Empleado</div>
+                <div class="bp-user-role">Barbero</div>
+            </div>
+        </div>
+
+        <nav class="bp-sidebar-nav">
+            <a href="#" class="bp-nav-item active" data-section="agenda">
+                <i class="fas fa-calendar-day"></i><span>Mi Agenda</span>
+            </a>
+            <a href="#" class="bp-nav-item" data-section="turnosSemana">
+                <i class="fas fa-calendar-week"></i><span>Semana</span>
+            </a>
+            <a href="#" class="bp-nav-item" data-section="estadisticas">
+                <i class="fas fa-chart-line"></i><span>Mis Estadísticas</span>
+            </a>
+            <hr class="bp-nav-divider">
+            <a href="#" class="bp-nav-item bp-nav-danger" id="btnLogout">
+                <i class="fas fa-sign-out-alt"></i><span>Cerrar Sesión</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- ========================================================
+         MAIN CONTENT — Empleado
+         ======================================================== -->
+    <div class="bp-dash-main" id="dashMain">
+
+        <!-- Topbar -->
+        <header class="bp-topbar">
+            <button class="bp-topbar-menu d-lg-none" id="sidebarOpen">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="bp-topbar-title" id="topbarTitle">Mi Agenda de Hoy</div>
+            <div class="bp-topbar-actions">
+                <span class="bp-topbar-date" id="topbarDate"></span>
+            </div>
+        </header>
+
+        <!-- ====================================================
+             SECCIÓN: Agenda del día
+             ==================================================== -->
+        <section class="bp-section-content" id="secAgenda">
+            <!-- Cards de estado del día -->
+            <div class="row g-3 mb-4">
+                <div class="col-sm-4">
+                    <div class="bp-stat-widget">
+                        <div class="bp-sw-icon" style="background:rgba(201,168,76,0.15);color:#C9A84C">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <div class="bp-sw-value" id="swPendientes">0</div>
+                            <div class="bp-sw-label">Pendientes</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="bp-stat-widget">
+                        <div class="bp-sw-icon" style="background:rgba(59,130,246,0.15);color:#3b82f6">
+                            <i class="fas fa-spinner"></i>
+                        </div>
+                        <div>
+                            <div class="bp-sw-value" id="swEnCurso">0</div>
+                            <div class="bp-sw-label">Confirmados</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="bp-stat-widget">
+                        <div class="bp-sw-icon" style="background:rgba(34,197,94,0.15);color:#22c55e">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div>
+                            <div class="bp-sw-value" id="swCompletadosHoy">0</div>
+                            <div class="bp-sw-label">Completados hoy</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de turnos del día con acciones -->
+            <div class="bp-dash-card">
+                <div class="bp-dash-card-header">
+                    <h6><i class="fas fa-list me-2"></i>Turnos de Hoy — <span id="fechaHoyLabel"></span></h6>
+                    <button class="btn btn-sm bp-btn-outline" onclick="loadAgendaHoy()">
+                        <i class="fas fa-sync-alt me-1"></i>Actualizar
+                    </button>
+                </div>
+                <div class="bp-dash-card-body p-0">
+                    <div id="agendaGrid" class="p-3">
+                        <!-- Las tarjetas de turno se generan desde dashboard-employee.js -->
+                        <div class="text-center py-4">
+                            <div class="spinner-border bp-spinner" role="status"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====================================================
+             SECCIÓN: Semana completa
+             ==================================================== -->
+        <section class="bp-section-content d-none" id="secTurnosSemana">
+            <div class="bp-dash-card">
+                <div class="bp-dash-card-header">
+                    <h6><i class="fas fa-calendar-week me-2"></i>Turnos de la Semana</h6>
+                    <button class="btn btn-sm bp-btn-outline" onclick="loadSemana()">
+                        <i class="fas fa-sync-alt me-1"></i>Actualizar
+                    </button>
+                </div>
+                <div class="bp-dash-card-body p-0">
+                    <div class="table-responsive">
+                        <table class="bp-table">
+                            <thead>
+                                <tr>
+                                    <th>Día</th>
+                                    <th>Cliente</th>
+                                    <th>Servicio</th>
+                                    <th>Hora</th>
+                                    <th>Precio</th>
+                                    <th>Estado</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="semanaBody">
+                                <tr><td colspan="7" class="text-center py-3">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====================================================
+             SECCIÓN: Estadísticas del empleado
+             ==================================================== -->
+        <section class="bp-section-content d-none" id="secEstadisticas">
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="bp-stat-widget bp-stat-large">
+                        <div class="bp-sw-icon" style="background:rgba(201,168,76,0.15);color:#C9A84C">
+                            <i class="fas fa-calendar-day fa-lg"></i>
+                        </div>
+                        <div>
+                            <div class="bp-sw-value fw-bold fs-3" id="statHoy">0</div>
+                            <div class="bp-sw-label">Cortes hoy</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bp-stat-widget bp-stat-large">
+                        <div class="bp-sw-icon" style="background:rgba(59,130,246,0.15);color:#3b82f6">
+                            <i class="fas fa-calendar-week fa-lg"></i>
+                        </div>
+                        <div>
+                            <div class="bp-sw-value fw-bold fs-3" id="statSemana">0</div>
+                            <div class="bp-sw-label">Cortes esta semana</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bp-stat-widget bp-stat-large">
+                        <div class="bp-sw-icon" style="background:rgba(34,197,94,0.15);color:#22c55e">
+                            <i class="fas fa-calendar-alt fa-lg"></i>
+                        </div>
+                        <div>
+                            <div class="bp-sw-value fw-bold fs-3" id="statMes">0</div>
+                            <div class="bp-sw-label">Cortes este mes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bp-dash-card">
+                <div class="bp-dash-card-header">
+                    <h6><i class="fas fa-chart-line me-2"></i>Servicios más atendidos (este mes)</h6>
+                </div>
+                <div class="bp-dash-card-body">
+                    <canvas id="chartEmpServicios" height="150"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div><!-- /bp-dash-main -->
+
+    <!-- MODAL — Atender cliente / cambiar estado -->
+    <div class="modal fade" id="modalAtender" tabindex="-1" aria-modal="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bp-modal">
+                <div class="modal-header">
+                    <h6 class="modal-title">Atender Cliente</h6>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="atendTurnoId">
+                    <div class="bp-cliente-detail mb-3">
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <label class="bp-label">Cliente</label>
+                                <p class="fw-semibold mb-0" id="atendCliente">—</p>
+                            </div>
+                            <div class="col-6">
+                                <label class="bp-label">DNI</label>
+                                <p class="fw-semibold mb-0" id="atendDni">—</p>
+                            </div>
+                            <div class="col-6">
+                                <label class="bp-label">Servicio</label>
+                                <p class="fw-semibold mb-0" id="atendServicio">—</p>
+                            </div>
+                            <div class="col-6">
+                                <label class="bp-label">Hora</label>
+                                <p class="fw-semibold mb-0" id="atendHora">—</p>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="bp-label" for="atendNotas">Notas / Observaciones</label>
+                    <textarea class="bp-input" id="atendNotas" rows="3"
+                              placeholder="Comentarios de la atención (opcional)..."></textarea>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn bp-btn-outline btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-sm"
+                                style="background:#ef4444;color:#fff;border:none;"
+                                onclick="cambiarEstadoEmp('cancelado')">
+                            <i class="fas fa-times me-1"></i>Cancelar turno
+                        </button>
+                        <button type="button" class="btn bp-btn-primary btn-sm"
+                                onclick="cambiarEstadoEmp('completado')">
+                            <i class="fas fa-check me-1"></i>Marcar completado
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="js/dashboard-employee.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Barber Post — Reserva tu turno online en la mejor barbería de la ciudad. Cortes, barba, teñidos y más.">
+    <title>Barber Post | Reservas Online</title>
+
+    <!-- ========================================================
+         Estilos externos (CDN)
+         ======================================================== -->
+    <!-- Bootstrap 5.3 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Google Fonts: Playfair Display + Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap">
+    <!-- AOS Animate On Scroll -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+
+    <!-- Estilos propios -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ========================================================
+         NAVBAR — Barra de navegación sticky
+         ======================================================== -->
+    <nav class="navbar navbar-expand-lg navbar-dark bp-navbar fixed-top" id="mainNavbar">
+        <div class="container">
+            <!-- Logo + nombre de marca -->
+            <a class="navbar-brand bp-brand" href="#">
+                <span class="bp-logo-icon">✂</span>
+                <span class="bp-brand-text">BARBER<span class="bp-gold">POST</span></span>
+            </a>
+
+            <!-- Botón móvil (hamburguesa) -->
+            <button class="navbar-toggler border-0" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navMenu" aria-label="Menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Links de navegación -->
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto align-items-center gap-1">
+                    <li class="nav-item"><a class="nav-link bp-nav-link" href="#servicios">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link bp-nav-link" href="#como-funciona">¿Cómo funciona?</a></li>
+                    <li class="nav-item"><a class="nav-link bp-nav-link" href="#nosotros">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link bp-nav-link" href="#contacto">Contacto</a></li>
+                    <li class="nav-item ms-2">
+                        <a href="login.html" class="btn bp-btn-outline btn-sm">
+                            <i class="fas fa-user-lock me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item ms-1">
+                        <a href="reservar.html" class="btn bp-btn-primary btn-sm">
+                            <i class="fas fa-calendar-plus me-1"></i>Reservar
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========================================================
+         HERO — Sección principal full-screen
+         ======================================================== -->
+    <section class="bp-hero" id="inicio">
+        <div class="bp-hero-overlay"></div>
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-lg-7 col-md-9" data-aos="fade-right" data-aos-delay="100">
+                    <p class="bp-hero-eyebrow">✂ Barbería Premium</p>
+                    <h1 class="bp-hero-title">
+                        La experiencia<br>
+                        de corte<br>
+                        <span class="bp-gold">definitiva.</span>
+                    </h1>
+                    <p class="bp-hero-subtitle">
+                        Reservá tu turno en minutos. Confirmación instantánea por WhatsApp.
+                        Sin filas, sin esperas.
+                    </p>
+                    <div class="bp-hero-actions d-flex gap-3 flex-wrap">
+                        <a href="reservar.html" class="btn bp-btn-primary bp-btn-lg">
+                            <i class="fas fa-calendar-plus me-2"></i>Reservar Turno
+                        </a>
+                        <a href="#servicios" class="btn bp-btn-outline bp-btn-lg">
+                            Ver Servicios
+                        </a>
+                    </div>
+                    <!-- Badges de confianza -->
+                    <div class="bp-trust-badges d-flex gap-4 mt-4">
+                        <div class="bp-trust-item">
+                            <i class="fas fa-star text-warning"></i>
+                            <span>4.9 / 5</span>
+                        </div>
+                        <div class="bp-trust-item">
+                            <i class="fas fa-users"></i>
+                            <span>+2.000 clientes</span>
+                        </div>
+                        <div class="bp-trust-item">
+                            <i class="fas fa-clock"></i>
+                            <span>9h - 20h</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Scroll down arrow -->
+        <a href="#servicios" class="bp-scroll-down" aria-label="Ver más">
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </section>
+
+    <!-- ========================================================
+         SERVICIOS — Tarjetas de todos los servicios con precios
+         ======================================================== -->
+    <section class="bp-section" id="servicios">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="bp-section-label">Nuestros Servicios</span>
+                <h2 class="bp-section-title">Todo lo que necesitás<br><span class="bp-gold">en un solo lugar.</span></h2>
+                <p class="bp-section-subtitle">Precios claros, sin sorpresas. Profesionales certificados.</p>
+            </div>
+
+            <!-- Grid de servicios — se carga desde la API -->
+            <div class="row g-4" id="serviciosGrid">
+                <!-- Las tarjetas se inyectan desde main.js -->
+                <div class="col-12 text-center py-4">
+                    <div class="spinner-border bp-spinner" role="status"></div>
+                    <p class="mt-2 bp-text-muted">Cargando servicios...</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-5" data-aos="fade-up">
+                <a href="reservar.html" class="btn bp-btn-primary bp-btn-lg">
+                    <i class="fas fa-calendar-check me-2"></i>Reservar Ahora
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================
+         CÓMO FUNCIONA — Pasos del proceso de reserva
+         ======================================================== -->
+    <section class="bp-section bp-section-dark" id="como-funciona">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="bp-section-label bp-label-light">Proceso</span>
+                <h2 class="bp-section-title text-white">¿Cómo reservar<br><span class="bp-gold">tu turno?</span></h2>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <!-- Paso 1 -->
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="bp-step-card">
+                        <div class="bp-step-number">01</div>
+                        <div class="bp-step-icon"><i class="fas fa-cut"></i></div>
+                        <h5 class="bp-step-title">Elegí el servicio</h5>
+                        <p class="bp-step-desc">Seleccioná entre cortes, barba, teñidos y más. Con precio y duración estimada.</p>
+                    </div>
+                </div>
+                <!-- Paso 2 -->
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="bp-step-card">
+                        <div class="bp-step-number">02</div>
+                        <div class="bp-step-icon"><i class="fas fa-calendar-alt"></i></div>
+                        <h5 class="bp-step-title">Fecha y hora</h5>
+                        <p class="bp-step-desc">Seleccioná el día y el horario disponible. Solo mostramos los turnos libres.</p>
+                    </div>
+                </div>
+                <!-- Paso 3 -->
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="bp-step-card">
+                        <div class="bp-step-number">03</div>
+                        <div class="bp-step-icon"><i class="fas fa-user-check"></i></div>
+                        <h5 class="bp-step-title">Tus datos</h5>
+                        <p class="bp-step-desc">Ingresá nombre, DNI y teléfono. Solo la primera vez (recordamos tus datos).</p>
+                    </div>
+                </div>
+                <!-- Paso 4 -->
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="bp-step-card">
+                        <div class="bp-step-number">04</div>
+                        <div class="bp-step-icon"><i class="fab fa-whatsapp"></i></div>
+                        <h5 class="bp-step-title">¡Confirmado!</h5>
+                        <p class="bp-step-desc">Recibís la confirmación por WhatsApp con todos los detalles de tu turno.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================
+         NOSOTROS — About section con estadísticas
+         ======================================================== -->
+    <section class="bp-section" id="nosotros">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <span class="bp-section-label">Quiénes Somos</span>
+                    <h2 class="bp-section-title">Más de una década<br><span class="bp-gold">definiendo estilos.</span></h2>
+                    <p class="bp-text mt-3">
+                        En <strong>Barber Post</strong> combinamos la tradición de la barbería clásica
+                        con las últimas tendencias. Nuestros barberos están en constante capacitación
+                        para ofrecerte siempre el mejor resultado.
+                    </p>
+                    <p class="bp-text">
+                        Usamos productos de primera calidad: Wella, Redken, American Crew y más.
+                        Tu cabello merece lo mejor.
+                    </p>
+                    <div class="row g-3 mt-2">
+                        <div class="col-6">
+                            <div class="bp-stat-card">
+                                <div class="bp-stat-number">10+</div>
+                                <div class="bp-stat-label">Años de experiencia</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="bp-stat-card">
+                                <div class="bp-stat-number">2K+</div>
+                                <div class="bp-stat-label">Clientes satisfechos</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="bp-stat-card">
+                                <div class="bp-stat-number">8</div>
+                                <div class="bp-stat-label">Barberos expertos</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="bp-stat-card">
+                                <div class="bp-stat-number">4.9★</div>
+                                <div class="bp-stat-label">Calificación promedio</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="bp-about-image-wrap">
+                        <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=700&q=80&auto=format&fit=crop"
+                             alt="Barbero profesional en Barber Post"
+                             class="bp-about-image img-fluid">
+                        <div class="bp-about-badge">
+                            <i class="fas fa-award"></i>
+                            <span>Barbería<br>Premium</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================
+         TESTIMONIOS — Reseñas de clientes
+         ======================================================== -->
+    <section class="bp-section bp-section-gray" id="testimonios">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="bp-section-label">Testimonios</span>
+                <h2 class="bp-section-title">Lo que dicen<br><span class="bp-gold">nuestros clientes.</span></h2>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="bp-testimonial-card">
+                        <div class="bp-stars">★★★★★</div>
+                        <p>"El mejor corte que tuve en años. Los chicos son unos profesionales totales. Ya saqué el próximo turno antes de salir."</p>
+                        <div class="bp-testimonial-author">
+                            <span class="bp-author-avatar">MR</span>
+                            <div>
+                                <strong>Matías R.</strong>
+                                <small>Cliente frecuente</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="bp-testimonial-card">
+                        <div class="bp-stars">★★★★★</div>
+                        <p>"Reservé online en 2 minutos y me llegó el WhatsApp de confirmación al toque. Muy cómodo. El corte + barba quedó impecable."</p>
+                        <div class="bp-testimonial-author">
+                            <span class="bp-author-avatar">LG</span>
+                            <div>
+                                <strong>Lucas G.</strong>
+                                <small>+15 visitas</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="bp-testimonial-card">
+                        <div class="bp-stars">★★★★★</div>
+                        <p>"Llevo a mi hijo desde chico. Los barberos tienen una paciencia increíble con los chicos. El espacio es hermoso y siempre está prolijo."</p>
+                        <div class="bp-testimonial-author">
+                            <span class="bp-author-avatar">SM</span>
+                            <div>
+                                <strong>Sofía M.</strong>
+                                <small>Mamá de cliente fiel</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================
+         CONTACTO — Información de contacto + CTA
+         ======================================================== -->
+    <section class="bp-section bp-section-dark" id="contacto">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <span class="bp-section-label bp-label-light">Contacto</span>
+                    <h2 class="bp-section-title text-white">¿Tenés alguna<br><span class="bp-gold">consulta?</span></h2>
+                    <div class="bp-contact-list mt-4">
+                        <div class="bp-contact-item">
+                            <i class="fas fa-map-marker-alt bp-gold"></i>
+                            <div>
+                                <strong class="text-white">Dirección</strong>
+                                <span>Av. Principal 1234, Buenos Aires</span>
+                            </div>
+                        </div>
+                        <div class="bp-contact-item">
+                            <i class="fas fa-clock bp-gold"></i>
+                            <div>
+                                <strong class="text-white">Horarios</strong>
+                                <span>Lun-Vie: 9:00 – 20:00 | Sáb: 9:00 – 18:00</span>
+                            </div>
+                        </div>
+                        <div class="bp-contact-item">
+                            <i class="fab fa-whatsapp bp-gold"></i>
+                            <div>
+                                <strong class="text-white">WhatsApp</strong>
+                                <span>+54 11 5555-6666</span>
+                            </div>
+                        </div>
+                        <div class="bp-contact-item">
+                            <i class="fab fa-instagram bp-gold"></i>
+                            <div>
+                                <strong class="text-white">Instagram</strong>
+                                <span>@barberpost</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center text-lg-start" data-aos="fade-left">
+                    <div class="bp-cta-box">
+                        <h3 class="bp-cta-title">¿Listo para tu próximo corte?</h3>
+                        <p class="bp-cta-subtitle">Reservá ahora y recibí la confirmación al instante por WhatsApp.</p>
+                        <a href="reservar.html" class="btn bp-btn-primary bp-btn-lg d-inline-flex align-items-center gap-2 mt-2">
+                            <i class="fas fa-calendar-plus"></i>
+                            Reservar Turno Ahora
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================
+         FOOTER
+         ======================================================== -->
+    <footer class="bp-footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+                    <span class="bp-brand-text bp-footer-brand">BARBER<span class="bp-gold">POST</span></span>
+                    <p class="bp-footer-tagline">La experiencia de corte definitiva.</p>
+                </div>
+                <div class="col-md-4 text-center mb-3 mb-md-0">
+                    <ul class="bp-footer-links">
+                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="#como-funciona">Cómo funciona</a></li>
+                        <li><a href="reservar.html">Reservar</a></li>
+                        <li><a href="login.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <div class="bp-social-links">
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bp-footer-divider">
+            <p class="bp-footer-copy text-center">
+                &copy; 2025 Barber Post. Todos los derechos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ========================================================
+         CHATBOT — Widget flotante
+         ======================================================== -->
+    <div class="bp-chatbot-widget" id="chatbotWidget">
+
+        <!-- Botón flotante de apertura -->
+        <button class="bp-chatbot-toggle" id="chatbotToggle" aria-label="Abrir chat">
+            <i class="fas fa-comments" id="chatIcon"></i>
+            <i class="fas fa-times d-none" id="closeIcon"></i>
+            <span class="bp-chatbot-badge" id="chatBadge">1</span>
+        </button>
+
+        <!-- Ventana del chat -->
+        <div class="bp-chatbot-window" id="chatbotWindow">
+            <!-- Header del chat -->
+            <div class="bp-chat-header">
+                <div class="bp-chat-avatar">✂</div>
+                <div>
+                    <strong>Barber Post Asistente</strong>
+                    <small>Responde al instante 🟢</small>
+                </div>
+                <button class="bp-chat-close ms-auto" id="chatbotClose" aria-label="Cerrar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Mensajes -->
+            <div class="bp-chat-messages" id="chatMessages">
+                <div class="bp-chat-msg bp-msg-bot">
+                    <span>¡Hola! 👋 Soy el asistente de <strong>Barber Post</strong>. Podés preguntarme sobre precios, servicios, horarios o cómo reservar.</span>
+                </div>
+            </div>
+
+            <!-- Input -->
+            <div class="bp-chat-input-area">
+                <input type="text" class="bp-chat-input" id="chatInput"
+                       placeholder="Escribí tu consulta..." maxlength="300"
+                       autocomplete="off">
+                <button class="bp-chat-send" id="chatSend" aria-label="Enviar">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         Scripts externos
+         ======================================================== -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Scripts propios -->
+    <script src="js/chatbot.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>

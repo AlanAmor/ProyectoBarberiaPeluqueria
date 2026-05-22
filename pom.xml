@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ============================================================
+         Identificación del proyecto
+         ============================================================ -->
+    <groupId>com.barberpost</groupId>
+    <artifactId>barberpost</artifactId>
+    <version>1.0.0</version>
+    <packaging>war</packaging>
+    <name>Barber Post — Sistema de Reservas</name>
+    <description>
+        Sistema de gestión de turnos y reservas para cadena de barberías.
+        Incluye booking online, chatbot, dashboard propietario y empleados.
+    </description>
+
+    <!-- ============================================================
+         Propiedades globales
+         ============================================================ -->
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Versiones de dependencias centralizadas -->
+        <servlet.api.version>4.0.1</servlet.api.version>
+        <mysql.version>8.0.33</mysql.version>
+        <gson.version>2.10.1</gson.version>
+    </properties>
+
+    <!-- ============================================================
+         Dependencias
+         ============================================================ -->
+    <dependencies>
+
+        <!-- Servlet API — provisto por Tomcat 9, no se empaqueta -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${servlet.api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Gson — Serialización/deserialización JSON para las APIs REST -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
+
+        <!-- MySQL Connector — Driver JDBC para MySQL 8 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <!-- ============================================================
+         Build
+         ============================================================ -->
+    <build>
+        <!-- El WAR final se llamará barberpost.war -->
+        <finalName>barberpost</finalName>
+
+        <plugins>
+
+            <!-- Plugin WAR — empaquetado de la aplicación web -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <failOnMissingWebXml>true</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+
+            <!-- Compiler plugin — asegurar Java 11 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <!--
+                Tomcat 7 Maven Plugin — desarrollo local.
+                Para levantar el servidor: mvn tomcat7:run
+                URL: http://localhost:8080/barberpost
+            -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <port>8080</port>
+                    <path>/barberpost</path>
+                    <uriEncoding>UTF-8</uriEncoding>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
