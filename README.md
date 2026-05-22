@@ -1,53 +1,26 @@
-# ✂ BARBER POST — Manual de Usuario y Mantenimiento
+# ✂ Barber Post
 
-## Índice
+Sistema web de reservas y gestión para barberías.
 
-1. [Descripción del Sistema](#descripción-del-sistema)
-2. [Requisitos del Sistema](#requisitos-del-sistema)
-3. [Instalación Paso a Paso](#instalación-paso-a-paso)
-4. [Estructura del Proyecto](#estructura-del-proyecto)
-5. [Arquitectura MVC](#arquitectura-mvc)
-6. [Endpoints de la API](#endpoints-de-la-api)
-7. [Panel del Dueño](#panel-del-dueño)
-8. [Panel del Empleado](#panel-del-empleado)
-9. [Proceso de Reserva del Cliente](#proceso-de-reserva-del-cliente)
-10. [Chatbot](#chatbot)
-11. [Integración con WhatsApp](#integración-con-whatsapp)
-12. [Mantenimiento y Administración](#mantenimiento-y-administración)
-13. [Seguridad](#seguridad)
-14. [Problemas Frecuentes](#problemas-frecuentes)
+## Descripción
 
----
+**Barber Post** es una plataforma que facilita la gestión integral de servicios de barberías. Permite a los clientes reservar turnos online de forma sencilla, mientras que propietarios y empleados cuentan con herramientas para administrar la operación del negocio, consultar agendas y obtener estadísticas.
 
-## Descripción del Sistema
+## Tecnologías Utilizadas
 
-**Barber Post** es un sistema de reservas y gestión para cadenas de barberías. Permite a los clientes reservar turnos online y a los administradores y empleados gestionar la operación completa del negocio.
+- **Backend**: Java con Servlets
+- **Frontend**: HTML5, CSS3, JavaScript
+- **Base de Datos**: MySQL
+- **Servidor**: Apache Tomcat
+- **Build**: Apache Maven
+- **Arquitectura**: MVC (Model-View-Controller)
 
-### Funcionalidades principales
+## Funcionalidades
 
-| Rol | Funcionalidades |
-|-----|----------------|
-| **Cliente** | Reservar turno online, ver precios, WhatsApp automático de confirmación |
-| **Dueño** | Ver todos los turnos, modificar precios, estadísticas, facturación, clientes frecuentes |
-| **Empleado** | Ver agenda del día, marcar clientes atendidos, estadísticas personales |
-
----
-
-## Requisitos del Sistema
-
-### Software requerido
-
-| Componente | Versión mínima | Descarga |
-|-----------|---------------|---------|
-| **Java JDK** | 11 | [adoptium.net](https://adoptium.net) |
-| **Apache Maven** | 3.6 | [maven.apache.org](https://maven.apache.org) |
-| **Apache Tomcat** | 9.0 | [tomcat.apache.org](https://tomcat.apache.org) |
-| **MySQL** | 8.0 | [mysql.com](https://mysql.com) |
-
-### Verificar instalación
-
-```bash
-java -version       # Debe mostrar 11 o superior
+- **Clientes**: Reserva de turnos online con confirmación automática
+- **Propietarios**: Gestión completa de turnos, precios y estadísticas
+- **Empleados**: Vista de agenda y registro de atenciones
+- **Chatbot**: Asistencia automática para consultas
 mvn -version        # Debe mostrar 3.6 o superior
 mysql --version     # Debe mostrar 8.x
 ```
